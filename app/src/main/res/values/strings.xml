@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Room&amp;ViewModel</string>
+    <string name="no_info">No information</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="salary">Salary</string>
+    <string name="save">Save</string>
+</resources>
