@@ -13,6 +13,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
     private List<User> users;
     private LayoutInflater layoutInflater;
     private final String noInfo = "No information";
+    private OnItemClicked onItemClicked;
 
     public UserAdapter(Context context){
         layoutInflater = LayoutInflater.from(context);
@@ -26,7 +27,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserHolder userHolder, int i) {
+    public void onBindViewHolder(@NonNull UserHolder userHolder, final int i) {
         if(users != null) {
             userHolder.getName().setText(users.get(i).getName());
             userHolder.getSurname().setText(users.get(i).getSurname());
@@ -36,6 +37,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
             userHolder.getSurname().setText(noInfo);
             userHolder.getSalary().setText(noInfo);
         }
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClicked != null) {
+                    onItemClicked.onItemClick(users.get(i));
+                }
+            }
+        };
+        userHolder.itemView.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -49,5 +59,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserHolder> {
     public void setUsers(List<User> users) {
         this.users = users;
         notifyDataSetChanged();
+    }
+
+    public interface OnItemClicked{
+        void onItemClick(User user);
+    }
+
+    public void setOnItemClicked(OnItemClicked onItemClicked) {
+        this.onItemClicked = onItemClicked;
     }
 }

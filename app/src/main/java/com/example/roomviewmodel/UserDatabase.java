@@ -1,6 +1,5 @@
 package com.example.roomviewmodel;
 
-import android.app.Application;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
@@ -20,8 +19,8 @@ public abstract class UserDatabase extends RoomDatabase {
         if (INSTANCE == null){
             synchronized (UserDatabase.class){
                 if(INSTANCE == null){
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext()
-                            , UserDatabase.class, MY_TABLE)
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                            UserDatabase.class, MY_TABLE)
 //                            .addCallback(sRoomDatabaseCallback).allowMainThreadQueries()
                             .build();
                 }
@@ -50,9 +49,9 @@ public abstract class UserDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(final Void... params) {
             mDao.deleteAll();
-            User user = new User("Antony", "Hopkins", 500000);
+            User user = new User(0,"Antony", "Hopkins", 500000);
             mDao.insertUser(user);
-            user = new User("Jimmy", "Fallon", 600000);
+            user = new User(1,"Jimmy", "Fallon", 600000);
             mDao.insertUser(user);
             return null;
         }

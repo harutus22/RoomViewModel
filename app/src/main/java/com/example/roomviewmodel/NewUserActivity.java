@@ -10,6 +10,8 @@ import android.widget.EditText;
 public class NewUserActivity extends AppCompatActivity {
     public static final String NEW_USER = "newUser";
     private EditText name, surname, salary;
+    private boolean isNewUser = true;
+    private int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,16 @@ public class NewUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_user);
 
         findViews();
+
+        if(getIntent().hasExtra(MainActivity.KEY_UPDATE)) {
+            Intent intent = getIntent();
+            User user = intent.getParcelableExtra(MainActivity.KEY_UPDATE);
+            id = user.getId();
+            name.setText(user.getName());
+            surname.setText(user.getSurname());
+            salary.setText(String.valueOf(user.getSalary()));
+            isNewUser = false;
+        }
     }
 
     private void findViews() {
@@ -26,17 +38,32 @@ public class NewUserActivity extends AppCompatActivity {
     }
 
     public void saveUser(View view){
+        saveNewUser();
+    }
+
+    private void saveNewUser(){
         Intent replyIntent = new Intent();
-        if(checkIfFieldsEmpty()){
-            setResult(RESULT_CANCELED, replyIntent);
+        if(isNewUser) {
+            if (checkIfFieldsEmpty()) {
+                setResult(RESULT_CANCELED, replyIntent);
+            } else {
+                User user = createUser(0);
+                replyIntent.putExtra(NEW_USER, user);
+                setResult(RESULT_OK, replyIntent);
+            }
         } else {
-            String name = this.name.getText().toString();
-            String surname = this.surname.getText().toString();
-            int salary = Integer.valueOf(this.salary.getText().toString());
-            replyIntent.putExtra(NEW_USER, new User(name, surname, salary));
+            User user = createUser(id);
+            replyIntent.putExtra(MainActivity.KEY_UPDATE, user);
             setResult(RESULT_OK, replyIntent);
         }
         finish();
+    }
+
+    private User createUser(int id){
+        String name = this.name.getText().toString();
+        String surname = this.surname.getText().toString();
+        int salary = Integer.valueOf(this.salary.getText().toString());
+        return new User(id, name, surname, salary);
     }
 
     private boolean checkIfFieldsEmpty(){

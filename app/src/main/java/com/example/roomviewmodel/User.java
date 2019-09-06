@@ -7,6 +7,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import static android.arch.persistence.room.ColumnInfo.TEXT;
+
 @Entity(tableName = "my_table")
 public class User implements Parcelable {
 
@@ -14,7 +16,8 @@ public class User implements Parcelable {
     public User(){
     }
 
-    public User(String name, String surname, int salary){
+    public User(int id, String name, String surname, int salary){
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.salary = salary;
